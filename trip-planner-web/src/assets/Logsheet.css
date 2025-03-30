@@ -1,0 +1,115 @@
+/* src/assets/Logsheet.css */
+.log-sheet {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    margin: 2rem 0;
+  }
+  
+  .log-sheet h2 {
+    color: #1a237e;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 0.75rem;
+  }
+  
+  .log-entries {
+    display: grid;
+    gap: 1rem;
+  }
+  
+  .log-entry {
+    background: #f8f9fe;
+    border-radius: 8px;
+    padding: 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    align-items: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .log-entry:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+  }
+  
+  .log-entry p {
+    margin: 0;
+    color: #4b5563;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .log-entry p::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #6366f1;
+  }
+  
+  .log-header {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    padding: 0 1rem 1rem;
+    border-bottom: 2px solid #f0f0f0;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: #1a237e;
+  }
+  
+  .status-indicator {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  
+  .status-rest {
+    background: #ecfdf5;
+    color: #10b981;
+    border: 1px solid #a7f3d0;
+  }
+  
+  .status-warning {
+    background: #fffbeb;
+    color: #f59e0b;
+    border: 1px solid #fde68a;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .log-entry {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      padding: 1rem;
+    }
+  
+    .log-entry p::before {
+      display: none;
+    }
+  
+    .log-header {
+      display: none;
+    }
+  
+    .log-entry p {
+      display: flex;
+      justify-content: space-between;
+    }
+  
+    .log-entry p::after {
+      content: attr(data-label);
+      color: #6b7280;
+      font-weight: 500;
+      font-size: 0.85rem;
+    }
+  }

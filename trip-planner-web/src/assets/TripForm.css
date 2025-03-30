@@ -1,0 +1,229 @@
+/* TripForm.css */
+
+/* Main container styling */
+.trip-form-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    transition: transform 0.2s ease;
+  }
+  
+  /* Header section styling */
+  .form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #f0f2f5;
+  }
+  
+  .form-header h2 {
+    color: #1a1d23;
+    margin: 1rem 0 0.5rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+  
+  .form-header p {
+    color: #6b7280;
+    margin: 0;
+    font-size: 0.95rem;
+  }
+  
+  .form-icon {
+    font-size: 2.5rem;
+    color: #3b82f6;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Form layout styling */
+  .trip-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .input-group {
+    position: relative;
+    margin-bottom: 1.2rem;
+  }
+  
+  .input-row {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  /* Label and icon styling */
+  .input-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: #374151;
+    font-weight: 500;
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+  }
+  
+  .input-icon {
+    font-size: 1.2rem;
+    min-width: 20px;
+  }
+  
+  /* Color variants for icons */
+  .current { color: #3b82f6; }
+  .pickup { color: #10b981; }
+  .dropoff { color: #ef4444; }
+  
+  /* Input field styling */
+  .trip-form input,
+  .address-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f8fafc;
+  }
+  
+  .trip-form input:focus,
+  .address-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+  
+  /* Autocomplete dropdown styling */
+  .autocomplete-wrapper {
+    position: relative;
+  }
+  
+  .autocomplete-dropdown {
+    position: absolute;
+    z-index: 1000;
+    width: 100%;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  .suggestion-item {
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  
+  .suggestion-item:hover {
+    background: #f3f4f6;
+  }
+  
+  /* Time picker customization */
+  .time-picker {
+    width: 100% !important;
+    padding: 0.8rem;
+    border: 2px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    background: #f8fafc !important;
+  }
+  
+  .react-time-picker__clock-button {
+    display: none !important;
+  }
+  
+  /* Error states */
+  .trip-form input.error,
+  .address-input.error {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+  }
+  
+  .error-message {
+    color: #ef4444;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    display: block;
+    font-weight: 500;
+  }
+  
+  /* Submit button styling */
+  .submit-button {
+    background: #3b82f6;
+    color: white;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+  }
+  
+  .submit-button:hover:not(:disabled) {
+    background: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+  }
+  
+  /* Loading animation */
+  .spin {
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  /* Status alerts */
+  .alert {
+    padding: 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    text-align: center;
+  }
+  
+  .alert.success {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #22c55e;
+  }
+  
+  .alert.error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #ef4444;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .input-row {
+      grid-template-columns: 1fr;
+    }
+  
+    .trip-form-container {
+      margin: 1rem;
+      padding: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .form-header h2 {
+      font-size: 1.5rem;
+    }
+    
+    .submit-button {
+      width: 100%;
+      padding: 1rem;
+    }
+  }

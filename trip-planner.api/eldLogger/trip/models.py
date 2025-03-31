@@ -78,6 +78,7 @@ class Driver(models.Model):
 
     def __str__(self):
         return f"{self.user.full_name} - Driver"
+    
     # Remove username field
     username = None
     

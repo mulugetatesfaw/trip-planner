@@ -1,8 +1,5 @@
 import { useAxios } from './axios';
 
-//const API_BASE_URL = 'http://localhost:8000/api/';
-//`${API_BASE_URL}${endpoint}`
-
 export default function useTripService() {
   const api = useAxios();
 

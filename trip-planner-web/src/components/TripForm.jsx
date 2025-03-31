@@ -1,49 +1,78 @@
-// src/components/TripForm.js
-import React, { useState } from 'react';
-import { FaMapMarkerAlt, FaClock, FaTruckMoving } from 'react-icons/fa';
-import '../assets/TripForm.css';
-import { useNavigate } from 'react-router-dom';
-//import TripService from '../services/tripService';
-import TripModel from './models/tripModel';
-import useTripService from '../services/tripService';
+import React, { useState } from "react";
+import { FaMapMarkerAlt, FaClock, FaTruckMoving } from "react-icons/fa";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import { useNavigate } from "react-router-dom";
+import "../assets/TripForm.css";
+import TripModel from "./models/tripModel";
+import useTripService from "../services/tripService";
+
 const TripForm = ({ onSubmit }) => {
   const [tripData, setTripData] = useState({
-    current_location: '',
-    pickup_location: '',
-    dropoff_location: '',
+    current_location: "",
+    pickup_location: "",
+    dropoff_location: "",
     current_cycle_used: 0,
-
   });
+  
+  const [pickupCoords, setPickupCoords] = useState(null);
+  const [dropoffCoords, setDropoffCoords] = useState(null);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const tripService = useTripService();
 
-  const handleChange = (e) => {
+  const getCoordinates = async (address) => {
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`
+      );
+      const data = await response.json();
+      if (data.length > 0) {
+        return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+      }
+      return null;
+    } catch (error) {
+      console.error("Error fetching coordinates:", error);
+      return null;
+    }
+  };
+
+  const handleChange = async (e) => {
     const { name, value } = e.target;
     setTripData({ ...tripData, [name]: value });
+
+    if (name === "pickup_location") {
+      const coords = await getCoordinates(value);
+      setPickupCoords(coords);
+    } else if (name === "dropoff_location") {
+      const coords = await getCoordinates(value);
+      setDropoffCoords(coords);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
 
-    try {
-      // Validate trip data
-      TripModel.validate(tripData);
+    if (!pickupCoords || !dropoffCoords) {
+      setError("Please enter valid pickup and dropoff locations.");
+      return;
+    }
 
-      // Create TripModel instance
+    try {
+      TripModel.validate(tripData);
       const trip = new TripModel(
         tripData.current_location,
         tripData.pickup_location,
         tripData.dropoff_location,
         tripData.current_cycle_used
       );
-
+      
       await tripService.createTrip(trip);
-      onSubmit(trip); 
-      navigate('/map', { state: { pickup_location: tripData.pickup_location, dropoff_location: tripData.dropoff_location } });
+      onSubmit(trip);
+      navigate("/map", { state: { pickupCoords, dropoffCoords } });
     } catch (err) {
-      setError(err.message || 'An error occurred while registering.');
+      setError(err.message || "An error occurred while registering.");
     }
   };
 
@@ -58,8 +87,7 @@ const TripForm = ({ onSubmit }) => {
       <form onSubmit={handleSubmit} className="trip-form">
         <div className="input-group">
           <label>
-            <FaMapMarkerAlt className="input-icon" />
-            Current Location
+            <FaMapMarkerAlt className="input-icon" /> Current Location
           </label>
           <input
             type="text"
@@ -72,8 +100,7 @@ const TripForm = ({ onSubmit }) => {
 
         <div className="input-group">
           <label>
-            <FaMapMarkerAlt className="input-icon pickup" />
-            Pickup Location
+            <FaMapMarkerAlt className="input-icon pickup" /> Pickup Location
           </label>
           <input
             type="text"
@@ -86,8 +113,7 @@ const TripForm = ({ onSubmit }) => {
 
         <div className="input-group">
           <label>
-            <FaMapMarkerAlt className="input-icon dropoff" />
-            Dropoff Location
+            <FaMapMarkerAlt className="input-icon dropoff" /> Dropoff Location
           </label>
           <input
             type="text"
@@ -100,8 +126,7 @@ const TripForm = ({ onSubmit }) => {
 
         <div className="input-group">
           <label>
-            <FaClock className="input-icon" />
-            Current Cycle Used (Hours)
+            <FaClock className="input-icon" /> Current Cycle Used (Hours)
           </label>
           <input
             type="number"
@@ -114,9 +139,26 @@ const TripForm = ({ onSubmit }) => {
         </div>
         {error && <p className="error-message">{error}</p>}
         <button type="submit" className="submit-button">
-          Star Trip
+          Start Trip
         </button>
       </form>
+
+      {/* Display Map Only If Coordinates Are Available */}
+      {pickupCoords && dropoffCoords && (
+        <MapContainer
+          center={pickupCoords}
+          zoom={13}
+          style={{ height: "400px", width: "100%", marginTop: "20px" }}
+        >
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          <Marker position={pickupCoords}>
+            <Popup>Pickup Location</Popup>
+          </Marker>
+          <Marker position={dropoffCoords}>
+            <Popup>Dropoff Location</Popup>
+          </Marker>
+        </MapContainer>
+      )}
     </div>
   );
 };

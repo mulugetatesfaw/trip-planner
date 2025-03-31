@@ -19,6 +19,7 @@ router.register(r'log-entries', LogEntryViewSet)
 auth_urlpatterns = [
     path('register/', AuthViewSet.as_view({'post': 'register'}), name='auth-register'),
     path('login/', AuthViewSet.as_view({'post': 'login'}), name='auth-login'),
+    path('logout/', AuthViewSet.as_view({'post': 'logout'}), name='auth-logout'),
 ]
 urlpatterns = [
     path('', include(router.urls)),

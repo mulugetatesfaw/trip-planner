@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     # apps
     'trip',
     'rest_framework_simplejwt',
+     'rest_framework_simplejwt.token_blacklist',
+     #'channels',
+
 ]
 
 MIDDLEWARE = [
@@ -75,6 +78,12 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'eldLogger.wsgi.application'
+
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels.layers.InMemoryChannelLayer",  
+#     },
+# }
 
 
 # Database

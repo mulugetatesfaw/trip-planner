@@ -20,11 +20,16 @@ export default function useAuthService() {
   async function login(credentials) {
     return this.request('/auth/login/', credentials);
   }
+  async function logout() {
+    return this.request('/auth/logout/', null, 'post');
+  }
+ 
 
   return {
     request,
     register,
     login,
+    logout,
   };
 
 }

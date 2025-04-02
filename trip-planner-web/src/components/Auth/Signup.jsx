@@ -2,36 +2,39 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../../assets/Auth.css';
 import UserModel from '../models/userModel';
-import useAuthService from '../../services/authService'; // Import useAuthService
+import useAuthService from '../../services/authService';
 
-
-const Signup = ({ onAuthSuccess }) => { // Use onAuthSuccess instead of setAuthenticated
+const Signup = ({ onAuthSuccess }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null); // State for error handling
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
   const authService = useAuthService();
-  const [ setSuccess] = useState(null); // State for success message
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); // Reset error state
-    setSuccess(null); // Reset success state
+    setError(null);
+    setSuccess(null);
 
     const userData = {
       full_name: name,
       email,
       password,
     };
-    
 
     try {
       UserModel.validate(userData);
-      await authService.register(userData);
-      setSuccess('Registration successful! You can now log in.'); // Set success message
-      onAuthSuccess(userData);
-      navigate('/login');
+      const registeredUser = await authService.register(userData);
+      
+      setSuccess('Registration successful! Redirecting to login...');
+      
+      // Call onAuthSuccess with user data (if needed)
+      onAuthSuccess(registeredUser);
+      
+      // Redirect to login page
+      setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
       console.error(err);
       setError(err.message || 'An error occurred while registering.');
@@ -42,7 +45,8 @@ const Signup = ({ onAuthSuccess }) => { // Use onAuthSuccess instead of setAuthe
     <div className="auth-container">
       <div className="auth-card">
         <h2>Create Account</h2>
-        {error && <p className="error-message">{error}</p>} {/* Show error if exists */}
+        {error && <p className="error-message">{error}</p>}
+        {success && <p className="success-message">{success}</p>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Full Name</label>
